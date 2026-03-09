@@ -2,6 +2,10 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <vector>
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -38,79 +42,44 @@ public:
     string getTitle() const {
         return title;
     }
-};
 
-void addHead(Node*& head, float rating, string comment) {
-    Node* newNode = new Node;
-    newNode->rating = rating;
-    newNode->comment = comment;
-    newNode->next = head;
-    head = newNode;
-}
 
-void addTail(Node*& head, float rating, string comment) {
-    Node* newNode = new Node;
-    newNode->rating = rating;
-    newNode->comment = comment;
-    newNode->next = nullptr;
 
-    if (head == nullptr) {
-        head = newNode;
-    }
-    else {
+void outputReviews() const {
         Node* curr = head;
-        while (curr->next != nullptr) {
+        int count = 0;
+        double total = 0.0;
+
+        cout << "\nMovie: " << title << endl;
+        while (curr != nullptr) {
+            count++;
+            cout << "  Review #" << count << ": "
+                 << curr->rating << " - "
+                 << curr->comment << endl;
+            total += curr->rating;
             curr = curr->next;
         }
-        curr->next = newNode;
+        if (count > 0) {
+            cout << "  Average Rating: " << total / count << endl;
+        }
     }
+    };
 
+
+    double randomRating() {
+    return (rand() % 40 + 10) / 10;
 }
 
-
-void output(Node* head) {
-    Node* curr = head;
-    int reviewNum = 1;
-    float total = 0.0f;
-    int count = 0;
-
-    cout << "\nOutputting all reviews:" << endl;
-    while (curr != nullptr) {
-       cout << "> Review #" << reviewNum << ": "
-             << curr->rating << ": "
-             << curr->comment << endl;
-        total += curr->rating;
-        count++;
-        reviewNum++;
-        curr = curr->next;
-    }
-    if (count>0) {
-        cout << (total / count);
-    }
-    else {
-        cout << "Average:0" << endl;
-    }
-}
-void deleteList(Node*& head) {
-    while (head != nullptr) {
-        Node* temp = head;
-        head = head->next;
-        delete temp;
-    }
-}
 
 int main() {
-    Node* head = nullptr;
-    int choice;
-    float rating;
-    string comment;
-    char again;
+    // Node* head = nullptr;
+    // int choice;
+    // float rating;
+    // string comment;
+    // char again;
+    
 
-    cout << "Which linked list method should we use?" << endl;
-    cout << "New nodes are added at head of the linked list" << endl;
-    cout << "New nodes are added at tail of linked list" << endl;
-    cout << "Choice: ";
-    cin >> choice;
+    
 
     do{
         cout << "Enter review rating->";
@@ -120,10 +89,10 @@ int main() {
         cout << "Enter review comments: ";
         getline(cin, comment);
         if(choice == 1){
-            addHead(head, rating, comment);
+            addReview(head, rating, comment);
         }
         else {
-            addTail(head, rating, comment);
+            outputReviews(head, rating, comment);
         }
         cout << "Enter another review? Y/N: ";
         cin >> again;
