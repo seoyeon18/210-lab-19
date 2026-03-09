@@ -54,52 +54,63 @@ void outputReviews() const {
         while (curr != nullptr) {
             count++;
             cout << "  Review #" << count << ": "
-                 << curr->rating << " - "
+                 << curr->rating << " -"
                  << curr->comment << endl;
             total += curr->rating;
             curr = curr->next;
         }
         if (count > 0) {
-            cout << "  Average Rating: " << total / count << endl;
+            cout << "  Average Rating:" << total / count << endl;
         }
     }
     };
 
 
     double randomRating() {
-    return (rand() % 40 + 10) / 10;
+    return (rand() % 40 + 10) / 10 ;
 }
 
 
 int main() {
-    // Node* head = nullptr;
-    // int choice;
-    // float rating;
-    // string comment;
-    // char again;
-    
 
-    
+    srand(time(0));
 
-    do{
-        cout << "Enter review rating->";
-        cin >> rating;
+    vector<Movie> movies;
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Enter review comments: ";
-        getline(cin, comment);
-        if(choice == 1){
-            addReview(head, rating, comment);
+    movies.push_back(Movie("dvc life"));
+    movies.push_back(Movie("aaa")) ;
+    movies.push_back(Movie("Zootopia"));
+    movies.push_back(Movie("Avatar"));
+
+    ifstream fin("reviews.txt");
+
+    string line;
+
+    int i;
+    int j ;
+
+    for(i = 0; i < movies.size(); i++) 
+    {
+    for(j = 0; j < 3;j++) {
+
+            getline(fin, line) ;
+
+            double rating = (rand() % 41 + 10) / 10.0;
+
+            movies[i].addReview(rating, line);
+
         }
-        else {
-            outputReviews(head, rating, comment);
-        }
-        cout << "Enter another review? Y/N: ";
-        cin >> again;
-    }while (again == 'Y' || again == 'y');
+    }
 
-    output(head);
-    deleteList(head); 
+    fin.close();
+
+    cout << endl;
+    cout << "Movie Reviews\n";
+
+    for(i = 0; i < movies.size(); i++){
+
+        movies[i].outputReviews();
+    }
 
     return 0;
 }
